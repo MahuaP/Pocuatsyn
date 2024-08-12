@@ -1,0 +1,15 @@
+{
+	"name": "ls_kv_dev",
+	"properties": {
+		"parameters": {
+			"env": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "@{concat('https://kv-',linkedService().env,'-git.vault.azure.net/')}"
+		}
+	}
+}
