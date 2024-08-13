@@ -10,8 +10,161 @@
 				"typeProperties": {
 					"waitTimeInSeconds": 1
 				}
+			},
+			{
+				"name": "getStorageaccount",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "set DBName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "@concat('https://kv-',variables('env'),'-git.vault.azure.net/secrets/syn-storage-account/?api-version=7.0')",
+						"type": "Expression"
+					},
+					"connectVia": {
+						"referenceName": "AutoResolveIntegrationRuntime",
+						"type": "IntegrationRuntimeReference"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "get env",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Wait1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "env",
+					"value": {
+						"value": "@split(pipeline().DataFactory,'-')[2]",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "getDBname",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "get env",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"url": {
+						"value": "@concat('https://kv-',variables('env'),'-git.vault.azure.net/secrets/syn-DName-dev?api-version=7.0')",
+						"type": "Expression"
+					},
+					"connectVia": {
+						"referenceName": "AutoResolveIntegrationRuntime",
+						"type": "IntegrationRuntimeReference"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "set DBName",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "getDBname",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "DBName",
+					"value": {
+						"value": "@activity('getDBname').output.value",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "setStorageaccount",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "getStorageaccount",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "storageaccountName",
+					"value": {
+						"value": "@activity('getStorageaccount').output.value",
+						"type": "Expression"
+					}
+				}
 			}
 		],
+		"variables": {
+			"env": {
+				"type": "String"
+			},
+			"storageaccountName": {
+				"type": "String"
+			},
+			"DBName": {
+				"type": "String"
+			}
+		},
 		"annotations": []
 	}
 }
