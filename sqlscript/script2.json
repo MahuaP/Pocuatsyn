@@ -2,7 +2,7 @@
 	"name": "script2",
 	"properties": {
 		"content": {
-			"query": "--dummmy",
+			"query": "--dummmy dd",
 			"metadata": {
 				"language": "sql"
 			},
