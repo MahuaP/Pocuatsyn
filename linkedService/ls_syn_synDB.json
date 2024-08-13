@@ -1,0 +1,26 @@
+{
+	"name": "ls_syn_synDB",
+	"properties": {
+		"parameters": {
+			"env": {
+				"type": "string"
+			},
+			"DBName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlDW",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=\"@{concat('syn-ops-',linkedService().env,'.sql.azuresynapse.net')}\";Initial Catalog=@{linkedService().DBName}",
+			"credential": {
+				"referenceName": "cr_umi_dg",
+				"type": "CredentialReference"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
