@@ -2,7 +2,7 @@
 	"name": "script3",
 	"properties": {
 		"content": {
-			"query": "--dummy",
+			"query": "--dummy\n--updating script",
 			"metadata": {
 				"language": "sql"
 			},
