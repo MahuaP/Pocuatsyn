@@ -4,12 +4,15 @@
 		"parameters": {
 			"env": {
 				"type": "string"
+			},
+			"storageaccountname": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "AzureBlobFS",
 		"typeProperties": {
-			"url": "@{concat('https://syn',linkedService().env,'opstorage.dfs.core.windows.net/')}",
+			"url": "@{concat('https://',linkedService().storageaccountname,'.dfs.core.windows.net/')}",
 			"accountKey": {
 				"type": "AzureKeyVaultSecret",
 				"store": {
