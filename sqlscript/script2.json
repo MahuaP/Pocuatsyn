@@ -2,7 +2,7 @@
 	"name": "script2",
 	"properties": {
 		"content": {
-			"query": "--dummmy dd",
+			"query": "--dummmy dd\nselect * from dbo.empData",
 			"metadata": {
 				"language": "sql"
 			},
